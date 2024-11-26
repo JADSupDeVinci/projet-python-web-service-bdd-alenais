@@ -1,16 +1,12 @@
-# This is a sample Python script.
+# main.py
+from sqlalchemy.orm import sessionmaker
+from database.Engine import Engine
+from database.model.Habitante import Habitante
+from database.model.Ingredient import Ingredient
+from database.model.TypeIngredient import TypeIngredient
 
-# Press Ctrl+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+random_ingredients = Ingredient.get_random_ingredients_by_type()
+print("Ingrédients aléatoires par type :", random_ingredients)
+random_habitante = Habitante.random_habitante()
+print("Habitante aléatoire :", random_habitante)
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print("hello_world")  # Press F9 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
