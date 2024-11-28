@@ -10,3 +10,4 @@ def get_all_departments():
     return jsonify(Departments.toDict() for department in Departments)#transforme notre collection en json
 
 app.run(host = 'localhost', port=5000)#lance notre application sur le port 5000
+

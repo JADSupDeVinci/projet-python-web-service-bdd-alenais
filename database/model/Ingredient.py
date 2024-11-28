@@ -7,6 +7,7 @@ from database.model.AbstractEntity import AbstractEntity
 from database.Engine import Engine
 from database.model.TypeIngredient import TypeIngredient
 
+
 class Ingredient(AbstractEntity):
     __tablename__ = "ingredient"
 
@@ -41,14 +42,23 @@ class Ingredient(AbstractEntity):
         }
 
     @classmethod
-    def get_random_ingredients_by_type(cls) -> dict:
+    def get_random_ingredients(cls, nb_ingredients_type2: int) -> dict:
         with Session(Engine.getEngine()) as session:
-            type_ingredients = session.execute(select(cls.id_typeingredient).distinct()).scalars().all()
             random_ingredients = {}
-            for type_id in type_ingredients:
-                ingredients_of_type = session.query(cls).filter_by(id_typeingredient=type_id).all()
-                if ingredients_of_type:
-                    random_ingredient = random.choice(ingredients_of_type)
-                    random_ingredients[type_id] = (random_ingredient.get_ingredient())
-
+            ingredient_type_1 = session.query(cls).filter_by(id_typeingredient=1).all()
+            if ingredient_type_1:
+                random_ingredients["type_1"] = random.choice(ingredient_type_1).get_ingredient()
+            else:
+                random_ingredients["type_1"] = None
+            ingredients_type_2 = session.query(cls).filter_by(id_typeingredient=2).all()
+            if ingredients_type_2:
+                selected_ingredients = random.sample(
+                    ingredients_type_2,
+                    min(nb_ingredients_type2, len(ingredients_type_2))
+                )
+                random_ingredients["type_2"] = [ingredient.get_ingredient() for ingredient in selected_ingredients]
+            else:
+                random_ingredients["type_2"] = []
             return random_ingredients
+
+
