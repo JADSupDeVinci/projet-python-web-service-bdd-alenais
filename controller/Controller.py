@@ -11,12 +11,12 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1/pizza'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route('/getPizza', methods=['GET'])
+@app.route('/get-pizza', methods=['GET'])
 def getPizza():
         ingredients = Ingredient.get_random_ingredients(3)
         return jsonify(ingredients)
 
-@app.route('/randomHabitante', methods=['GET'])
+@app.route('/random-habitante', methods=['GET'])
 def get_random_habitante():
         habitante = Habitante.random_habitante()
         return jsonify(habitante.to_dict())
@@ -26,7 +26,7 @@ db.init_app(app)
 
 from sqlalchemy import text
 
-@app.route('/add_habitante', methods=['POST'])
+@app.route('/add-habitante', methods=['POST'])
 def add_habitante():
     data = request.json
     label = data.get('label')
@@ -45,7 +45,29 @@ def add_habitante():
 
 
 
-@app.route('/add_ingredient', methods=['POST'])
+@app.route('/add-type-ingredient', methods=['POST'])
+def add_type_ingredient():
+    data = request.json
+    label = data.get('label')
+
+    if not label:
+        return jsonify({'error': 'Tous les champs sont requis'}), 400
+
+    try:
+        # Utilisation de text() pour exécuter la procédure stockée
+        sql = text("CALL AddTypeIngredient(:label)")
+        db.session.execute(sql, {'label': label})
+        db.session.commit()
+
+        return jsonify({
+            'message': f'Type Ingrédient avec le nom "{label}" a été ajouté',
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/add-ingredient', methods=['POST'])
 def add_ingredient():
     data = request.json
     label = data.get('label')
@@ -68,10 +90,31 @@ def add_ingredient():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/update-ingredient/<int:ingredient_id>', methods=['PUT'])
+def update_ingredient(ingredient_id):
+    data = request.json
+    label_commercial = data.get('label_commercial')
+
+    if not label_commercial:
+        return jsonify({'error': 'Tous les champs sont requis'}), 400
+
+    try:
+        # Utilisation de text() pour exécuter la procédure stockée
+        sql = text("CALL UpdateIngredient(:label_com, :ingredient_id)")
+        db.session.execute(sql, {'label_com': label_commercial, 'ingredient_id': ingredient_id})
+        db.session.commit()
+
+        return jsonify({
+            'message': f'Ingrédient avec le nom "{label_commercial}" a été modifié',
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 
 from sqlalchemy import text
 
-@app.route('/delete_ingredient/<int:ingredient_id>', methods=['DELETE'])
+@app.route('/delete-ingredient/<int:ingredient_id>', methods=['DELETE'])
 def delete_ingredient(ingredient_id):
     try:
         sql = text("CALL DeleteIngredient(:ingredient_id)")
