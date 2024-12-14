@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="340db29e-e78a-47e3-9752-cd74e424f3a7" name="root@localhost (DDL) Mapping">
+      <data-sources db="c5a4ed97-afb2-4f7a-b77d-03ccb9a9d62d" ddl="8f73be56-1b46-4b19-8de2-d81b5e96a1c9" />
+      <scope>
+        <node kind="schema" qname="pizza" />
+      </scope>
+    </mapping>
+  </component>
   <component name="SqlDataSourceStorage">
     <option name="dataSources">
       <list>
         <State>
-          <option name="id" value="ea3a6789-ccce-4b7f-bf8f-1e15636f3970" />
+          <option name="id" value="8f73be56-1b46-4b19-8de2-d81b5e96a1c9" />
           <option name="name" value="root@localhost (DDL)" />
           <option name="dbmsName" value="MYSQL" />
           <option name="urls">

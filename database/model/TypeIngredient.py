@@ -6,7 +6,7 @@ from database.Engine import Engine
 from database.model.AbstractEntity import AbstractEntity
 
 class TypeIngredient(AbstractEntity):
-    __tablename__ = "typeingredient"  # Assurez-vous que le nom est correct
+    __tablename__ = "typeingredient"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     label: Mapped[str] = mapped_column(String(100))
@@ -27,6 +27,13 @@ class TypeIngredient(AbstractEntity):
         return {
             "id": self.id,
             "label": self.label
+        }
+
+    @classmethod
+    def toDict(cls):
+        return {
+            "id": cls.id,
+            "label": cls.label
         }
 
     @classmethod

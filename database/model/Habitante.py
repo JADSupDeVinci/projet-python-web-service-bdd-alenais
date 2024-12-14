@@ -38,3 +38,11 @@ class Habitante(AbstractEntity):
                 return selected_habitante
             else:
                 return None
+
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "label": self.label
+        }
