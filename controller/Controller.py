@@ -79,7 +79,7 @@ def add_ingredient():
     label_commercial = data.get('label_commercial')
     id_typeingredient = data.get('id_typeingredient')
 
-    if not label or not label_commercial or not id_typeingredient:
+    if not label or not id_typeingredient:
         return jsonify({'error': 'Tous les champs sont requis'}), 400
 
     try:
